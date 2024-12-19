@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 
 // Connect to the main MongoDB for user data
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, poolSize: 5 // Adjust based on your load
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, // Adjust based on your load
      })
   .then(() => console.log('Connected to main MongoDB'))
   .catch((err) => console.error('Failed to connect to main MongoDB:', err));
@@ -20,7 +20,6 @@ mongoose
 const verificationConnection = mongoose.createConnection(process.env.VERIFICATION_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  poolSize: 5 // Adjust based on your load
 });
 
 verificationConnection.once('open', () => {
@@ -34,6 +33,11 @@ verificationConnection.on('error', (err) => {
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
+
 
 // Define the main user model for user data
 const UserSchema = new mongoose.Schema({
