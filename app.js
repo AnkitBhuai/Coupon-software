@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -11,8 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set the views directory and view engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+const path = require('path');
+app.set('views', path.join(__dirname, 'views'));  // Adjust the path as needed
+app.set('view engine', 'ejs');  // If using EJS
 
 // Check for environment variables
 if (!process.env.MONGODB_URI || !process.env.VERIFICATION_DB_URI || !process.env.PORT) {
