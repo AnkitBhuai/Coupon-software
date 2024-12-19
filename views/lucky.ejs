@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucky Coupon Spin Wheel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  <div class="header">
+    <div class="text-center font-bold">
+      <h1 class="text-5xl font-bold mb-6 text-red-500">Shri Radhey Coumputer Coaching Center</h1>
+    </div>
+  </div>
+  <div class="text-center">
+    <h1 class="text-3xl font-bold mb-6">Spin the Wheel to Win a Coupon!</h1>
+    <div id="wheelContainer" class="relative w-96 h-96 mb-6 flex items-center justify-center">
+    <!-- Updated canvas dimensions for a larger wheel -->
+    <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
+    
+    <!-- Arrow Indicator -->
+    <div class="absolute top-1/2 right-10 transform -translate-y-1/2 translate-x-full">
+      <div class="w-0 h-0 border-t-[32px] border-b-[32px] border-r-[64px] border-t-transparent border-b-transparent border-r-green-500"></div>
+    </div>
+  </div>
+      
+      
+      <button id="backToHomeButton" class="hidden mt-4 px-6 py-3 bg-green-500 text-white font-bold rounded hover:bg-green-700">
+        Back to Home
+      </button>
+      <button id="spinButton" class="px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 left-40 absoulute">
+        SPIN
+      </button>
+      
+
+  <!-- Popup Modal -->
+ <!-- Popup Modal -->
+<div id="popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-80">
+    <div id="popupContent" class="text-center">
+      <h2 id="giftName" class="text-3xl font-bold mb-6 text-green-600"></h2>
+      <p class="text-lg mb-4">Take a screenshot and send this to us! 👍</p>
+      <p id="couponCode" class="text-lg text-gray-600 font-semibold"></p>
+    </div>
+    <button id="closePopup" class="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-700 w-full">
+      Close
+    </button>
+  </div>
+</div>
+
+
+  <script>
+    const items = [
+  { name: "Free Course", image: "./Course.png", coupon: "Free10" },
+  { name: "Fees 25% off", image: "./25off.jpg", coupon: "off70" },
+  { name: "Fees 20% off", image: "./20off.jpg", coupon: "off30" },
+  { name: "Fees 15% off", image: "./15off.jpg", coupon: "off40" },
+  { name: "Fees 10% off", image: "./10off.jpg", coupon: "off90" },
+  { name: "Fees 5% off", image: "./5off.jpg", coupon: "off80" }
+];
+
+const canvas = document.getElementById("wheelCanvas");
+const ctx = canvas.getContext("2d");
+const spinButton = document.getElementById("spinButton");
+const popup = document.getElementById("popup");
+const giftName = document.getElementById("giftName");
+const giftImage = document.getElementById("giftImage");
+const couponCode = document.getElementById("couponCode");
+const closePopup = document.getElementById("closePopup");
+const backToHomeButton = document.getElementById("backToHomeButton");
+
+const numSegments = items.length;
+const segmentAngle = (2 * Math.PI) / numSegments;
+
+// Draw the wheel
+function drawWheel() {
+  const radius = 192; // Half of the canvas size (384 / 2)
+  const centerX = 192;
+  const centerY = 192;
+
+  items.forEach((item, i) => {
+    const startAngle = i * segmentAngle;
+    const endAngle = startAngle + segmentAngle;
+
+    // Set alternating colors for segments
+    ctx.fillStyle = i % 2 === 0 ? "#FFD700" : "#FF6347";
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+    ctx.lineTo(centerX, centerY);
+    ctx.fill();
+
+    // Draw text
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(startAngle + segmentAngle / 2);
+
+    // Adjust text position and size
+    const textRadius = radius - 50; // Bring text closer to the center
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#000";
+    ctx.font = "bold 14px Arial"; // Adjust font size
+    ctx.fillText(item.name, textRadius, 5); // Keep text within bounds
+    ctx.restore();
+  });
+}
+
+
+drawWheel();
+
+let currentRotation = 0;
+
+// Function to calculate the selected item
+function getSelectedItem() {
+  // 1 in 10 chance to win the Smartphone
+  const winSmartphone = Math.random() < 0.1;  // 10% chance
+
+  if (winSmartphone) {
+    return items[0];  // Smartphone is always at index 0
+  }
+
+  // Otherwise, select a random item
+  const randomIndex = Math.floor(Math.random() * numSegments);
+  return items[randomIndex];
+}
+
+spinButton.addEventListener("click", () => {
+  const spinTo = currentRotation + Math.random() * 3600 + 720; // At least 2 full rotations
+  currentRotation = spinTo;
+
+  // Animate the spin
+  gsap.to(canvas, {
+    rotation: spinTo,
+    duration: 5,
+    ease: "power4.out",
+    onComplete: () => {
+      // Determine the selected item
+      const selectedItem = getSelectedItem();
+
+      // Show the selected gift in the popup
+      giftName.textContent = selectedItem.name;
+      couponCode.textContent = `Coupon Code: ${selectedItem.coupon}`;
+
+      popup.classList.remove("hidden");
+
+      // Disable Spin button
+      spinButton.disabled = true;
+      spinButton.classList.add("opacity-50");
+
+      // Show "Back to Home" button
+      backToHomeButton.classList.remove("hidden");
+    }
+  });
+});
+
+
+closePopup.addEventListener("click", () => {
+  window.location.href = "/";
+});
+
+backToHomeButton.addEventListener("click", () => {
+  window.location.href = "/";
+});
+
+  </script>
+</body>
+</html>
