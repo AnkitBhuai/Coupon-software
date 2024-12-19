@@ -21,14 +21,11 @@ if (!process.env.MONGODB_URI || !process.env.VERIFICATION_DB_URI || !process.env
 }
 
 // Connect to main MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log('Connected to main MongoDB'))
-  .catch(err => {
-      console.error('Failed to connect to main MongoDB:', err);
-      process.exit(1);
-  });
+mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to main MongoDB'))
+  .catch((err) => console.error('Failed to connect to main MongoDB:', err));
+
 
 // Connect to verification MongoDB
 to verification MongoDB
