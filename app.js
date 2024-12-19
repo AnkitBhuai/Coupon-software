@@ -28,7 +28,6 @@ mongoose
 
 
 // Connect to verification MongoDB
-to verification MongoDB
 const verificationConnection = mongoose.createConnection(process.env.VERIFICATION_DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
