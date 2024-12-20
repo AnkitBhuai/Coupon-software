@@ -96,38 +96,40 @@ app.get('/verify', (req, res) => {
 
 // POST route to verify user and insert data into verification MongoDB
 app.post('/verify', async (req, res) => {
-  const { admission_number: submittedUsername, password } = req.body;
+    const { admission_number: submittedUsername, password } = req.body;
 
-  if (!submittedUsername || !password) {
-    return res.status(400).send('Username and password are required');
-  }
-
-  try {
-    // Search for the user in the verification database
-    const foundUser = await VerifyUser.findOne({ username: submittedUsername });
-
-    if (foundUser) {
-      // Compare the provided password with the stored password
-      if (password === foundUser.password) {
-        // Delete the user document after successful verification
-        await VerifyUser.deleteOne({ username: submittedUsername });
-
-        console.log(`User '${submittedUsername}' deleted from the verification database`);
-        res.redirect('/dashboard');
-      } else {
-        // If the password is incorrect
-        console.log('Password mismatch');
-        res.status(401).send('Incorrect username or password!');
-      }
-    } else {
-      // If the user is not found
-      console.log('User not found');
-      res.status(404).send('User not found or incorrect details');
+    if (!password) {
+        return res.status(400).send('Password is required');
     }
-  } catch (error) {
-    console.error('Error during verification:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
+
+    try {
+        // Search for the user in the verification database using the renamed variable
+        const foundUser = await VerifyUser.findOne({ username: submittedUsername });
+
+        if (foundUser) {
+            // Compare the provided password with the password stored in the database
+            if (password === foundUser.password) {
+                // If the password is correct, delete the user document
+                await VerifyUser.deleteOne({ username: submittedUsername });
+
+                console.log(`User '${submittedUsername}' deleted from the verification database`);
+
+                // Redirect to the dashboard
+                res.redirect('/dashboard');
+            } else {
+                // If password is incorrect
+                res.status(401).send('Incorrect username or password!');
+            }
+        } else {
+            // If user is not found
+            res.status(404).send('User not found or incorrect details');
+        }
+    } catch (error) {
+        console.error('Error during verification:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+
+    console.log('Submitted username:', submittedUsername);
 });
 
 // Route for dashboard
