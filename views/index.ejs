@@ -1,42 +1,44 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index</title>
+  <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.js"></script>
 </head>
-<body>
-    <div class="flex justify-center items-center h-screen">
-        <% if (typeof message !== 'undefined') { %>
-            <div class="<%= error ? 'alert alert-danger' : 'alert alert-success' %>">
-                <%= message %>
-            </div>
-        <% } %>
-<form action="/" method="post">
-    <div class="w-64 bg-gray-200 p-4">
-        <div>
-            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-            <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" name="name" required />
-        </div>
-        <div>
-            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DOB</label>
-            <input type="date" id="dob" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="DOB" required />
-        </div>
-        <div>
-            <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Aadhar number</label>
-            <input type="number" id="aadhar_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678-90" name="aadhar_number" maxlength="12" required />
-        </div>  
-        <div>
-            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
-            <input type="text" id="admission_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678-90" name="admission_number" maxlength="10" required />
-        </div>
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-</form>
-</div>
-
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<body class="bg-gray-100">
+  <div class="max-w-lg mx-auto mt-10">
+    <form action="/" method="POST" class="bg-white shadow-md rounded-lg p-6">
+      <h1 class="text-2xl font-bold mb-4 text-gray-800">User Information</h1>
+      
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+      </div>
+      
+      <div class="mb-4">
+        <label for="DOB" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+        <input type="date" name="DOB" id="DOB" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+      </div>
+      
+      <div class="mb-4">
+        <label for="aadhar_number" class="block text-sm font-medium text-gray-700">Aadhar Number</label>
+        <input type="text" name="aadhar_number" id="aadhar_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+      </div>
+      
+      <div class="mb-4">
+        <label for="admission_number" class="block text-sm font-medium text-gray-700">Admission Number</label>
+        <input type="text" name="admission_number" id="admission_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+      </div>
+      
+      <% if (message) { %>
+        <p class="text-red-600 mt-2"><%= message %></p>
+      <% } %>
+      
+      <div class="mt-4">
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Submit</button>
+      </div>
+    </form>
+  </div>
 </body>
 </html>
