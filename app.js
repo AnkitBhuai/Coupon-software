@@ -22,7 +22,7 @@ if (!process.env.MONGODB_URI || !process.env.VERIFICATION_DB_URI || !process.env
 
 // Connect to main MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, poolsize: 5 })
   .then(() => console.log('Connected to main MongoDB'))
   .catch((err) => console.error('Failed to connect to main MongoDB:', err));
 
@@ -31,6 +31,7 @@ mongoose
 const verificationConnection = mongoose.createConnection(process.env.VERIFICATION_DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    poolsize: 5
 });
 
 verificationConnection.once('open', () => {
