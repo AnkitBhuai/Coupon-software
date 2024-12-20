@@ -59,8 +59,9 @@ const VerifyUser = verificationConnection.model('Verify', VerifyUserSchema);
 
 // Route for the main page
 app.get('/', (req, res) => {
-    res.render('index');
+  res.render('index', { message: null }); // Explicitly define `message` as null or an empty string
 });
+
 
 // POST route to save user data to main MongoDB
 app.post('/', async (req, res) => {
