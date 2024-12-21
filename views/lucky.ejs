@@ -8,7 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
- <header id="header" class="fixed-top bg-black w-100%" style="height: 100px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+  <header id="header" class="fixed-top bg-black w-100%" style="height: 100px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
     <div class="d-flex align-items-center">
       <!-- Logo with adjusted size -->
       <a href="https://shriradhey.difsalt.org/" class="logo me-auto">
@@ -21,25 +21,27 @@
       Shri Radhey Computer Coaching Center
     </h1>
   </header>
+  
+  
+  
+  
   <div class="text-center">
     <h1 class="text-3xl font-bold mb-6">Spin the Wheel to Win a Coupon!</h1>
-    <div id="wheelContainer" class="relative w-96 h-96 mb-6 flex items-center justify-center">
-    <!-- Updated canvas dimensions for a larger wheel -->
-    <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
-    
-    <!-- Arrow Indicator -->
-    <div class="absolute top-1/2 right-10 transform -translate-y-1/2 translate-x-full">
-      <div class="w-0 h-0 border-t-[32px] border-b-[32px] border-r-[64px] border-t-transparent border-b-transparent border-r-green-500"></div>
-    </div>
-  </div>
-      
-      
-      <button id="backToHomeButton" class="hidden mt-4 px-6 py-3 bg-green-500 text-white font-bold rounded hover:bg-green-700">
-        Back to Home
-      </button>
-      <button id="spinButton" class="px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-700 left-40 absoulute">
+    <div id="wheelContainer" class="relative w-96 h-96 mb-6 mx-auto flex items-center justify-center">
+      <!-- Spin Button to the left of the wheel -->
+      <button id="spinButton" class="absolute -left-20 top-1/2 transform -translate-y-1/2 px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-700">
         SPIN
       </button>
+      
+      <!-- Wheel Canvas -->
+      <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
+      
+      <!-- Arrow Indicator at the bottom -->
+      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full bottom-5">
+        <div class="w-3 h-3 border-l-[32px] border-r-[32px] border-b-[64px] border-l-transparent border-r-transparent border-b-green-500"></div>
+      </div>
+    </div>
+    
       
 
   <!-- Popup Modal -->
@@ -119,20 +121,6 @@ drawWheel();
 
 let currentRotation = 0;
 
-// Function to calculate the selected item
-function getSelectedItem() {
-  // 1 in 10 chance to win the Smartphone
-  const winSmartphone = Math.random() < 0.1;  // 10% chance
-
-  if (winSmartphone) {
-    return items[0];  // Smartphone is always at index 0
-  }
-
-  // Otherwise, select a random item
-  const randomIndex = Math.floor(Math.random() * numSegments);
-  return items[randomIndex];
-}
-
 spinButton.addEventListener("click", () => {
   const spinTo = currentRotation + Math.random() * 3600 + 720; // At least 2 full rotations
   currentRotation = spinTo;
@@ -142,9 +130,19 @@ spinButton.addEventListener("click", () => {
     rotation: spinTo,
     duration: 5,
     ease: "power4.out",
+    onUpdate: function () {
+      const rotationInDegrees = gsap.getProperty(canvas, "rotation") % 360;
+      canvas.style.transform = `rotate(${rotationInDegrees}deg)`;
+    },
     onComplete: () => {
-      // Determine the selected item
-      const selectedItem = getSelectedItem();
+      // Determine the stopping angle
+      const finalRotation = currentRotation % 360; // Get the angle in degrees within 0-360
+      const segmentIndex = Math.floor(
+        (360 - finalRotation + segmentAngle * (180 / Math.PI)) % 360 / (360 / numSegments)
+      );
+      
+      // Fetch the corresponding segment
+      const selectedItem = items[segmentIndex];
 
       // Show the selected gift in the popup
       giftName.textContent = selectedItem.name;
@@ -158,9 +156,10 @@ spinButton.addEventListener("click", () => {
 
       // Show "Back to Home" button
       backToHomeButton.classList.remove("hidden");
-    }
+    },
   });
 });
+
 
 
 closePopup.addEventListener("click", () => {
