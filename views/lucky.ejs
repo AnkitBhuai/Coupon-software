@@ -8,11 +8,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-  <div class="header">
-    <div class="text-center font-bold">
-      <h1 class="text-5xl font-bold mb-6 text-red-500">Shri Radhey Coumputer Coaching Center</h1>
+ <header id="header" class="fixed-top bg-black w-100%" style="height: 100px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <div class="d-flex align-items-center">
+      <!-- Logo with adjusted size -->
+      <a href="https://shriradhey.difsalt.org/" class="logo me-auto">
+        <img src="https://shriradhey.difsalt.org/institute/img/logo04092024153043pm.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
+      </a>
     </div>
-  </div>
+  
+    <!-- Centered Title -->
+    <h1 class="text-center m-auto" style="color: gold; font-size: 32px; font-weight: bold; flex-grow: 1; text-align: center;">
+      Shri Radhey Computer Coaching Center
+    </h1>
+  </header>
   <div class="text-center">
     <h1 class="text-3xl font-bold mb-6">Spin the Wheel to Win a Coupon!</h1>
     <div id="wheelContainer" class="relative w-96 h-96 mb-6 flex items-center justify-center">
