@@ -37,11 +37,11 @@
       <!-- Wheel Canvas -->
       <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
       
-      <!-- Arrow Indicator at the bottom -->
-      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full bottom-5">
-        <div class="w-3 h-3 border-l-[32px] border-r-[32px] border-b-[64px] border-l-transparent border-r-transparent border-b-green-500"></div>
-      </div>
+          <!-- Arrow Indicator -->
+    <div class="absolute top-1/2 right-10 transform -translate-y-1/2 translate-x-full">
+      <div class="w-0 h-0 border-t-[32px] border-b-[32px] border-r-[64px] border-t-transparent border-b-transparent border-r-green-500"></div>
     </div>
+  </div>
     
       
 
@@ -76,7 +76,6 @@ const ctx = canvas.getContext("2d");
 const spinButton = document.getElementById("spinButton");
 const popup = document.getElementById("popup");
 const giftName = document.getElementById("giftName");
-const giftImage = document.getElementById("giftImage");
 const couponCode = document.getElementById("couponCode");
 const closePopup = document.getElementById("closePopup");
 const backToHomeButton = document.getElementById("backToHomeButton");
@@ -117,33 +116,37 @@ function drawWheel() {
   });
 }
 
-
 drawWheel();
 
 let currentRotation = 0;
 
+// Function to calculate the selected item
+function getSelectedItem() {
+  const randomIndex = Math.floor(Math.random() * numSegments);
+  return items[randomIndex];
+}
+
+// Function to calculate the final rotation angle to stop at the selected item
+function getFinalRotationAngle() {
+  const selectedItem = getSelectedItem();
+  const selectedIndex = items.indexOf(selectedItem);
+  const targetAngle = selectedIndex * segmentAngle;
+  const rotationAmount = Math.random() * 3600 + 720; // At least 2 full rotations
+  const finalRotation = targetAngle + rotationAmount;
+  return finalRotation;
+}
+
 spinButton.addEventListener("click", () => {
-  const spinTo = currentRotation + Math.random() * 3600 + 720; // At least 2 full rotations
-  currentRotation = spinTo;
+  const finalRotation = getFinalRotationAngle();
+  currentRotation = finalRotation;
 
   // Animate the spin
   gsap.to(canvas, {
-    rotation: spinTo,
+    rotation: finalRotation,
     duration: 5,
     ease: "power4.out",
-    onUpdate: function () {
-      const rotationInDegrees = gsap.getProperty(canvas, "rotation") % 360;
-      canvas.style.transform = `rotate(${rotationInDegrees}deg)`;
-    },
     onComplete: () => {
-      // Determine the stopping angle
-      const finalRotation = currentRotation % 360; // Get the angle in degrees within 0-360
-      const segmentIndex = Math.floor(
-        (360 - finalRotation + segmentAngle * (180 / Math.PI)) % 360 / (360 / numSegments)
-      );
-      
-      // Fetch the corresponding segment
-      const selectedItem = items[segmentIndex];
+      const selectedItem = getSelectedItem();
 
       // Show the selected gift in the popup
       giftName.textContent = selectedItem.name;
@@ -157,11 +160,9 @@ spinButton.addEventListener("click", () => {
 
       // Show "Back to Home" button
       backToHomeButton.classList.remove("hidden");
-    },
+    }
   });
 });
-
-
 
 closePopup.addEventListener("click", () => {
   window.location.href = "/";
@@ -170,6 +171,7 @@ closePopup.addEventListener("click", () => {
 backToHomeButton.addEventListener("click", () => {
   window.location.href = "/";
 });
+
 
   </script>
 </body>
