@@ -19,14 +19,14 @@
   <!-- Main Content -->
   <div class="mt-[120px] flex flex-col items-center space-y-8">
     <h1 class="text-2xl font-bold text-center">Spin the Wheel to Win a Coupon!</h1>
+    <h2>this wheel has invisible arrow you'll get your item randomly, <br>
+      let's test your luck😍
+    </h2>
 
     <!-- Wheel Container -->
     <div id="wheelContainer" class="relative flex items-center justify-center">
-     
-    <!-- Arrow Indicator -->
-    <div class="absolute top-[-20px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[20px] border-r-[20px] border-b-[40px] border-l-transparent border-r-transparent border-b-green-500 transform rotate-180"></div>
-
-
+      <!-- Arrow Indicator -->
+    
 
       <!-- Wheel -->
       <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
@@ -108,18 +108,26 @@
 
     let currentRotation = 0;
 
-   // Function to calculate the selected item
-function getSelectedItem() {
-  const randomIndex = Math.floor(Math.random() * numSegments);
-  return items[randomIndex];
-}
+    // Function to calculate the selected item
+    function getSelectedItem() {
+      const randomIndex = Math.floor(Math.random() * numSegments);
+      return items[randomIndex];
+    }
 
-// Function to calculate the final rotation angle to stop the selected item at the top
+    // Function to calculate the final rotation angle to stop the selected item at the bottom (270°)
+  // Function to calculate the final rotation angle to stop at the selected item at the top
 function getFinalRotationAngle(selectedItem) {
   const selectedIndex = items.indexOf(selectedItem);
   const targetAngle = (selectedIndex * segmentAngle) + segmentAngle / 2; // Align item center to the top
-  const rotationAmount = Math.random() * 3600 + 720; // At least 2 full rotations
-  const finalRotation = rotationAmount - targetAngle; // Reverse rotation to align the item
+
+  // Ensure the wheel stops at the selected item (no randomization)
+  const stopAtTopAngle = 0; // Top of the wheel
+
+  // Calculate how many rotations to apply (2 full rotations + a fixed stop)
+  const rotationAmount = 720; // 2 full rotations (720°)
+
+  // Final rotation angle to stop at the selected item at the top
+  const finalRotation = rotationAmount + (stopAtTopAngle - targetAngle); 
   return finalRotation;
 }
 
@@ -140,16 +148,22 @@ spinButton.addEventListener("click", () => {
 
       popup.classList.remove("hidden");
 
+      // Align the arrow to the selected item
+      const angleOfSelectedItem = selectedIndex * segmentAngle + segmentAngle / 2;
+      const arrow = document.querySelector('.absolute.top-[-20px]');  // Adjust to target arrow element
+      arrow.style.transform = `rotate(${angleOfSelectedItem}deg)`; // Align the arrow to the selected item
+
       // Disable Spin button
       spinButton.disabled = true;
       spinButton.classList.add("opacity-50");
     }
   });
 });
-
 closePopup.addEventListener("click", () => {
+  // Redirect to the `/` route
   window.location.href = "/";
 });
+
 
   </script>
 </body>
