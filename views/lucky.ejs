@@ -9,145 +9,132 @@
   <link rel="icon" href="https://shriradhey.difsalt.org/institute/img/logo04092024153043pm.png" type="image/png">
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-  <header id="header" class="fixed-top bg-black w-100%" style="height: 100px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
-    <div class="d-flex align-items-center">
-      <!-- Logo with adjusted size -->
-      <a href="https://shriradhey.difsalt.org/" class="logo me-auto">
-        <img src="https://shriradhey.difsalt.org/institute/img/logo04092024153043pm.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
-      </a>
-    </div>
-  
-    <!-- Centered Title -->
-    <h1 class="text-center m-auto" style="color: gold; font-size: 32px; font-weight: bold; flex-grow: 1; text-align: center;">
-      Shri Radhey Computer Coaching Center
-    </h1>
+  <!-- Header -->
+  <header id="header" class="bg-black w-full fixed top-0 z-10 flex items-center justify-between px-4 h-[100px]">
+    <a href="https://shriradhey.difsalt.org/">
+      <img src="https://shriradhey.difsalt.org/institute/img/logo04092024153043pm.png" alt="Logo" class="h-16">
+    </a>
+    <h1 class="text-white text-2xl md:text-3xl font-bold text-center flex-grow">Shri Radhey Computer Coaching Center</h1>
   </header>
-  
-  
-  
-  
-  <div class="text-center">
-    <h1 class="text-3xl font-bold mb-6">Spin the Wheel to Win a Coupon!</h1>
-    <div id="wheelContainer" class="relative w-96 h-96 mb-6 mx-auto flex items-center justify-center">
-      <!-- Spin Button to the left of the wheel -->
-      <button id="spinButton" class="absolute -left-20 top-1/2 transform -translate-y-1/2 px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-700">
+
+  <!-- Main Content -->
+  <div class="mt-[120px] flex flex-col items-center space-y-8">
+    <h1 class="text-2xl font-bold text-center">Spin the Wheel to Win a Coupon!</h1>
+
+    <!-- Wheel Container -->
+    <div id="wheelContainer" class="relative flex items-center justify-center">
+     
+    <!-- Arrow Indicator -->
+    <div class="absolute top-[-20px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[20px] border-r-[20px] border-b-[40px] border-l-transparent border-r-transparent border-b-green-500 transform rotate-180"></div>
+
+
+
+      <!-- Wheel -->
+      <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
+
+      <!-- Spin Button -->
+      <button id="spinButton" 
+              class="absolute bottom-[-40px] left-1/2 transform -translate-x-1/2 px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-700">
         SPIN
       </button>
-      
-      <!-- Wheel Canvas -->
-      <canvas id="wheelCanvas" width="384" height="384" class="rounded-full shadow-lg"></canvas>
-      
-          <!-- Arrow Indicator -->
-    <div class="absolute top-1/2 right-10 transform -translate-y-1/2 translate-x-full">
-      <div class="w-0 h-0 border-t-[32px] border-b-[32px] border-r-[64px] border-t-transparent border-b-transparent border-r-green-500"></div>
     </div>
   </div>
-    
-      
 
   <!-- Popup Modal -->
- <!-- Popup Modal -->
-<div id="popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-  <div class="bg-white rounded-lg shadow-lg p-8 w-80">
-    <div id="popupContent" class="text-center">
-      <h2 id="giftName" class="text-3xl font-bold mb-6 text-green-600"></h2>
-      <p class="text-lg mb-4">Take a screenshot and send this to us! 👍</p>
-      <p id="couponCode" class="text-lg text-gray-600 font-semibold"></p>
+  <div id="popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-80">
+      <div id="popupContent" class="text-center">
+        <h2 id="giftName" class="text-3xl font-bold mb-6 text-green-600"></h2>
+        <p class="text-lg mb-4">Take a screenshot and send this to us! 👍</p>
+        <p id="couponCode" class="text-lg text-gray-600 font-semibold"></p>
+      </div>
+      <button id="closePopup" class="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-700 w-full">
+        Close
+      </button>
     </div>
-    <button id="closePopup" class="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-700 w-full">
-      Close
-    </button>
   </div>
-</div>
-
 
   <script>
     const items = [
-  { name: "Free Course", image: "./Course.png", coupon: "Free10" },
-  { name: "Fees 25% off", image: "./25off.jpg", coupon: "off70" },
-  { name: "Fees 20% off", image: "./20off.jpg", coupon: "off30" },
-  { name: "Fees 15% off", image: "./15off.jpg", coupon: "off40" },
-  { name: "Fees 10% off", image: "./10off.jpg", coupon: "off90" },
-  { name: "Fees 5% off", image: "./5off.jpg", coupon: "off80" }
-];
+      { name: "Free Course", image: "./Course.png", coupon: "Free10" },
+      { name: "Fees 25% off", image: "./25off.jpg", coupon: "off70" },
+      { name: "Fees 20% off", image: "./20off.jpg", coupon: "off30" },
+      { name: "Fees 15% off", image: "./15off.jpg", coupon: "off40" },
+      { name: "Fees 10% off", image: "./10off.jpg", coupon: "off90" },
+      { name: "Fees 5% off", image: "./5off.jpg", coupon: "off80" }
+    ];
 
-const canvas = document.getElementById("wheelCanvas");
-const ctx = canvas.getContext("2d");
-const spinButton = document.getElementById("spinButton");
-const popup = document.getElementById("popup");
-const giftName = document.getElementById("giftName");
-const couponCode = document.getElementById("couponCode");
-const closePopup = document.getElementById("closePopup");
-const backToHomeButton = document.getElementById("backToHomeButton");
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const spinButton = document.getElementById("spinButton");
+    const popup = document.getElementById("popup");
+    const giftName = document.getElementById("giftName");
+    const couponCode = document.getElementById("couponCode");
+    const closePopup = document.getElementById("closePopup");
 
-const numSegments = items.length;
-const segmentAngle = (2 * Math.PI) / numSegments;
+    const numSegments = items.length;
+    const segmentAngle = (2 * Math.PI) / numSegments;
 
-// Draw the wheel
-function drawWheel() {
-  const radius = 192; // Half of the canvas size (384 / 2)
-  const centerX = 192;
-  const centerY = 192;
+    // Draw the wheel
+    function drawWheel() {
+      const radius = 192;
+      const centerX = 192;
+      const centerY = 192;
 
-  items.forEach((item, i) => {
-    const startAngle = i * segmentAngle;
-    const endAngle = startAngle + segmentAngle;
+      items.forEach((item, i) => {
+        const startAngle = i * segmentAngle;
+        const endAngle = startAngle + segmentAngle;
 
-    // Set alternating colors for segments
-    ctx.fillStyle = i % 2 === 0 ? "#FFD700" : "#FF6347";
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-    ctx.lineTo(centerX, centerY);
-    ctx.fill();
+        ctx.fillStyle = i % 2 === 0 ? "#FFD700" : "#FF6347";
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
 
-    // Draw text
-    ctx.save();
-    ctx.translate(centerX, centerY);
-    ctx.rotate(startAngle + segmentAngle / 2);
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + segmentAngle / 2);
 
-    // Adjust text position and size
-    const textRadius = radius - 50; // Bring text closer to the center
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#000";
-    ctx.font = "bold 14px Arial"; // Adjust font size
-    ctx.fillText(item.name, textRadius, 5); // Keep text within bounds
-    ctx.restore();
-  });
-}
+        const textRadius = radius - 50;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#000";
+        ctx.font = "bold 14px Arial";
+        ctx.fillText(item.name, textRadius, 5);
+        ctx.restore();
+      });
+    }
 
-drawWheel();
+    drawWheel();
 
-let currentRotation = 0;
+    let currentRotation = 0;
 
-// Function to calculate the selected item
+   // Function to calculate the selected item
 function getSelectedItem() {
   const randomIndex = Math.floor(Math.random() * numSegments);
   return items[randomIndex];
 }
 
-// Function to calculate the final rotation angle to stop at the selected item
-function getFinalRotationAngle() {
-  const selectedItem = getSelectedItem();
+// Function to calculate the final rotation angle to stop the selected item at the top
+function getFinalRotationAngle(selectedItem) {
   const selectedIndex = items.indexOf(selectedItem);
-  const targetAngle = selectedIndex * segmentAngle;
+  const targetAngle = (selectedIndex * segmentAngle) + segmentAngle / 2; // Align item center to the top
   const rotationAmount = Math.random() * 3600 + 720; // At least 2 full rotations
-  const finalRotation = targetAngle + rotationAmount;
+  const finalRotation = rotationAmount - targetAngle; // Reverse rotation to align the item
   return finalRotation;
 }
 
 spinButton.addEventListener("click", () => {
-  const finalRotation = getFinalRotationAngle();
+  const selectedItem = getSelectedItem(); // Get the random selected item
+  const finalRotation = getFinalRotationAngle(selectedItem);
   currentRotation = finalRotation;
 
   // Animate the spin
   gsap.to(canvas, {
-    rotation: finalRotation,
+    rotation: currentRotation,
     duration: 5,
     ease: "power4.out",
     onComplete: () => {
-      const selectedItem = getSelectedItem();
-
       // Show the selected gift in the popup
       giftName.textContent = selectedItem.name;
       couponCode.textContent = `Coupon Code: ${selectedItem.coupon}`;
@@ -157,9 +144,6 @@ spinButton.addEventListener("click", () => {
       // Disable Spin button
       spinButton.disabled = true;
       spinButton.classList.add("opacity-50");
-
-      // Show "Back to Home" button
-      backToHomeButton.classList.remove("hidden");
     }
   });
 });
@@ -167,11 +151,6 @@ spinButton.addEventListener("click", () => {
 closePopup.addEventListener("click", () => {
   window.location.href = "/";
 });
-
-backToHomeButton.addEventListener("click", () => {
-  window.location.href = "/";
-});
-
 
   </script>
 </body>
