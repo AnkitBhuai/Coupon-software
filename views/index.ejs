@@ -22,11 +22,9 @@
     </header>
     
     <div class="flex justify-center items-center h-screen">
-        <% if (typeof message !== 'undefined') { %>
-            <div class="<%= error ? 'alert alert-danger' : 'alert alert-success' %>">
-                <%= message %>
-            </div>
-        <% } %>
+       <% if (message) { %>
+        <p class="text-red-600 mt-2"><%= message %></p>
+      <% } %>
 <form action="/" method="post">
     <div class="w-64 bg-gray-200 p-4">
         <div>
